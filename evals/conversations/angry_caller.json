@@ -1,0 +1,14 @@
+{
+  "name": "angry_caller",
+  "account_ref": "NW-1005",
+  "callers": [
+    "This is ridiculous. You people are thieves and I am furious."
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "VERIFYING",
+    "end_reason": null,
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

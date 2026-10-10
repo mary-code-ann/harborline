@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harborline</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      background: #f4f1ea;
+      color: #1c1915;
+    }
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    h1 { font-size: 1.6rem; margin-bottom: 0.2rem; }
+    p.note { color: #5c564c; font-size: 0.95rem; }
+    form, .row { display: flex; gap: 0.5rem; margin: 0.8rem 0; }
+    select, input, button {
+      font: inherit;
+      padding: 0.45rem 0.6rem;
+    }
+    select, input { flex: 1; }
+    button { cursor: pointer; }
+    #log {
+      min-height: 16rem;
+      background: white;
+      border: 1px solid #d9d3c7;
+      padding: 0.8rem;
+    }
+    .msg { margin: 0.45rem 0; }
+    .caller { color: #1c1915; }
+    .agent { color: #0b3d2e; }
+    .meta { color: #6b645b; font-family: ui-monospace, monospace; font-size: 0.8rem; }
+    a { color: #0b3d2e; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Harborline</h1>
+    <p class="note">Practice desk for the fictional creditor Northwind Credit. The people and balances are made up.</p>
+    <div class="row">
+      <label for="account">Account</label>
+      <select id="account">
+        <option>NW-1001</option>
+        <option>NW-1002</option>
+        <option>NW-1003</option>
+        <option>NW-1004</option>
+        <option>NW-1005</option>
+      </select>
+      <button id="start" type="button">Start call</button>
+    </div>
+    <div id="log" aria-live="polite"></div>
+    <p id="trace" class="meta"></p>
+    <form id="composer">
+      <input id="text" autocomplete="off" placeholder="Say something to the agent" disabled>
+      <button id="send" type="submit" disabled>Send</button>
+    </form>
+  </main>
+  <script>
+    const log = document.querySelector("#log");
+    const trace = document.querySelector("#trace");
+    const text = document.querySelector("#text");
+    const send = document.querySelector("#send");
+    let socket = null;
+
+    function add(kind, line) {
+      const p = document.createElement("p");
+      p.className = "msg " + kind;
+      p.textContent = line;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function show(message) {
+      if (message.conversation_id) {
+        trace.innerHTML = "";
+        const link = document.createElement("a");
+        link.href = "/conversations/" + message.conversation_id + "/trace";
+        link.textContent = "Open trace " + message.conversation_id;
+        trace.appendChild(link);
+        const state = document.createElement("span");
+        state.textContent = " · " + (message.state || "");
+        trace.appendChild(state);
+      }
+      add("agent", message.text || "");
+    }
+
+    document.querySelector("#start").addEventListener("click", () => {
+      if (socket) socket.close();
+      log.replaceChildren();
+      trace.replaceChildren();
+      const account = document.querySelector("#account").value;
+      const proto = location.protocol === "https:" ? "wss" : "ws";
+      socket = new WebSocket(proto + "://" + location.host + "/ws?account=" + encodeURIComponent(account));
+      socket.addEventListener("message", (event) => {
+        show(JSON.parse(event.data));
+      });
+      socket.addEventListener("open", () => {
+        text.disabled = false;
+        send.disabled = false;
+        text.focus();
+      });
+      socket.addEventListener("close", () => {
+        text.disabled = true;
+        send.disabled = true;
+      });
+    });
+
+    document.querySelector("#composer").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = text.value.trim();
+      if (!value || !socket || socket.readyState !== WebSocket.OPEN) return;
+      add("caller", value);
+      socket.send(JSON.stringify({ text: value }));
+      text.value = "";
+    });
+  </script>
+</body>
+</html>

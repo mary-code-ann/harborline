@@ -1,0 +1,14 @@
+{
+  "name": "dispute",
+  "account_ref": "NW-1003",
+  "callers": [
+    "I dispute this debt. It is not mine."
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "ESCALATED",
+    "end_reason": "DISPUTE",
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "lowball_plan",
+  "account_ref": "NW-1001",
+  "callers": [
+    "My name is Ava Ellison and my date of birth is March 14, 1986.",
+    "I can only pay $5 a month for 24 months."
+  ],
+  "expect": {
+    "disclosure": true,
+    "final_state": "NEGOTIATING",
+    "end_reason": null,
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

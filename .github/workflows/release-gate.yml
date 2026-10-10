@@ -1,0 +1,40 @@
+name: release-gate
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: harborline
+          POSTGRES_PASSWORD: harborline
+          POSTGRES_DB: harborline
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U harborline -d harborline"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql+asyncpg://harborline:harborline@localhost:5432/harborline
+      INSTRUCTION_VERSION: agent_v2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install -e ".[dev,eval]"
+      - name: Migrate and seed
+        run: |
+          alembic upgrade head
+          python -m app.db.seed
+      - name: Unit tests
+        run: pytest
+      - name: Release gate
+        run: python scripts/release_gate.py --require-db

@@ -1,0 +1,14 @@
+{
+  "name": "stop_contact",
+  "account_ref": "NW-1004",
+  "callers": [
+    "Stop calling me and cease contact."
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "ENDED",
+    "end_reason": "CEASE_CONTACT",
+    "cease_contact": true,
+    "plan_accepted": false
+  }
+}

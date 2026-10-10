@@ -1,0 +1,17 @@
+{
+  "name": "happy_path",
+  "account_ref": "NW-1001",
+  "callers": [
+    "My name is Ava Ellison and my date of birth is March 14, 1986.",
+    "What is the balance?",
+    "What payment plan can you offer?",
+    "Yes, I'll take that plan."
+  ],
+  "expect": {
+    "disclosure": true,
+    "final_state": "ENDED",
+    "end_reason": "COMPLETED",
+    "cease_contact": false,
+    "plan_accepted": true
+  }
+}

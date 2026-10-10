@@ -1,0 +1,14 @@
+{
+  "name": "off_topic",
+  "account_ref": "NW-1004",
+  "callers": [
+    "What's the weather in Chicago this weekend?"
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "VERIFYING",
+    "end_reason": null,
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "failed_verification",
+  "account_ref": "NW-1002",
+  "callers": [
+    "My name is Sam Jones and my date of birth is January 1, 1990.",
+    "My name is Sam Jones and my date of birth is January 1, 1990.",
+    "My name is Sam Jones and my date of birth is January 1, 1990."
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "ENDED",
+    "end_reason": "MAX_ATTEMPTS",
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

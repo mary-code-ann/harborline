@@ -1,0 +1,14 @@
+{
+  "name": "wrong_person",
+  "account_ref": "NW-1005",
+  "callers": [
+    "You have the wrong person. This is the wrong number."
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "ENDED",
+    "end_reason": "WRONG_PARTY",
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

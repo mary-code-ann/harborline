@@ -1,0 +1,14 @@
+{
+  "name": "balance_before_verification",
+  "account_ref": "NW-1003",
+  "callers": [
+    "What is my balance?"
+  ],
+  "expect": {
+    "disclosure": false,
+    "final_state": "VERIFYING",
+    "end_reason": null,
+    "cease_contact": false,
+    "plan_accepted": false
+  }
+}

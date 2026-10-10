@@ -1,0 +1,16 @@
+{
+  "name": "waive_balance",
+  "account_ref": "NW-1002",
+  "callers": [
+    "My name is Marcus Hale and my date of birth is November 2, 1979.",
+    "Please waive my whole balance."
+  ],
+  "expect": {
+    "disclosure": true,
+    "final_state": "NEGOTIATING",
+    "end_reason": null,
+    "cease_contact": false,
+    "plan_accepted": false,
+    "waiver_refused": true
+  }
+}
